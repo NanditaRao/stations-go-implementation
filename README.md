@@ -33,29 +33,29 @@ go build
 
 ## Logging and Error Handling
 
-*Used "log" library to implement logging.
-*Everytime a request is made, the endpoint, request parameters, path parameters and the time taken to complete the request is logged.
-*When an error occurs , the error is logged and error message is returned to user with appropriate http status.
+* Used "log" library to implement logging.
+* Everytime a request is made, the endpoint, request parameters, path parameters and the time taken to complete the request is logged.
+* When an error occurs , the error is logged and error message is returned to user with appropriate http status.
 
 Todo:
-*Implement Error Handling in a clean manner. Found [this](https://blog.golang.org/error-handling-and-go)  interesting, but because of lack of familiarity with Go could not implement it.
+* Implement Error Handling in a clean manner. Found [this](https://blog.golang.org/error-handling-and-go)  interesting, but because of lack of familiarity with Go could not implement it.
 
 ##Cache implementation
 
 Used "github.com/victorspringer/http-cache/adapter/memory" to implement cache.
-*The data is cached by method.
-*The cache eviction policy is LRU.
+* The data is cached by method.
+* The cache eviction policy is LRU.
 
 Todo:
-*Understand how the implementation can be made more advanced, to be able to plug into Redis.
-*Cache by stationId instead of by method name.
+* Understand how the implementation can be made more advanced, to be able to plug into Redis.
+* Cache by stationId instead of by method name.
 
 
 ##Testing
 
-*The tests that have been added are not unit tests because they are making a call to the actual endpoint.
-*I have tested all workflows in the 5 api endpoints.
-*Error messages and codes have been tested as well.
+* The tests that have been added are not unit tests because they are making a call to the actual endpoint.
+* I have tested all workflows in the 5 api endpoints.
+* Error messages and codes have been tested as well.
 
 Todo:
-*Understand how to stub api outputs so that true unit tests can be written
+* Understand how to stub api outputs so that true unit tests can be written
