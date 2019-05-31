@@ -1,87 +1,61 @@
-# Go Todo REST API Example
+# Go implementation of apis using CitiBike's Stations api
 A RESTful API example for simple todo application with Go
 
-It is a just simple tutorial or example for making simple RESTful API with Go using **gorilla/mux** (A nice mux library) and **gorm** (An ORM for Go)
 
 ## Installation & Run
 ```bash
-# Download this project
-go get github.com/mingrammer/go-todo-rest-api-example
-```
-
-Before running API server, you should set the database config with yours or set the your database config with my values on [config.go](https://github.com/mingrammer/go-todo-rest-api-example/blob/master/config/config.go)
-```go
-func GetConfig() *Config {
-	return &Config{
-		DB: &DBConfig{
-			Dialect:  "mysql",
-			Username: "guest",
-			Password: "Guest0000!",
-			Name:     "todoapp",
-			Charset:  "utf8",
-		},
-	}
-}
-```
-
-```bash
 # Build and Run
-cd go-todo-rest-api-example
+cd stations-go-implementation
 go build
-./go-todo-rest-api-example
+./stations-go-implementation
 
-# API Endpoint : http://127.0.0.1:3000
-```
-
-## Structure
-```
-├── app
-│   ├── app.go
-│   ├── handler          // Our API core handlers
-│   │   ├── common.go    // Common response functions
-│   │   ├── projects.go  // APIs for Project model
-│   │   └── tasks.go     // APIs for Task model
-│   └── model
-│       └── model.go     // Models for our application
-├── config
-│   └── config.go        // Configuration
-└── main.go
+# API Endpoint : http://127.0.0.1:4000
 ```
 
 ## API
 
-#### /projects
-* `GET` : Get all projects
-* `POST` : Create a new project
+#### /stations
+* `GET` : Gets all Stations, can be queried by page number,
 
-#### /projects/:title
-* `GET` : Get a project
-* `PUT` : Update a project
-* `DELETE` : Delete a project
 
-#### /projects/:title/archive
-* `PUT` : Archive a project
-* `DELETE` : Restore a project 
+#### /stations/in-service
+* `GET` : Gets all stations that are in service. Can be queried by page number.
 
-#### /projects/:title/tasks
-* `GET` : Get all tasks of a project
-* `POST` : Create a new task in a project
+#### /stations/not-in-service
+* `GET` : Gets all stations that are not in service. Can be queried by page number.
 
-#### /projects/:title/tasks/:id
-* `GET` : Get a task of a project
-* `PUT` : Update a task of a project
-* `DELETE` : Delete a task of a project
+#### /stations/:searchString
+* `GET` : Gets all the stations that have either the name or street address that contain the search string. The search is case-insensitive
 
-#### /projects/:title/tasks/:id/complete
-* `PUT` : Complete a task of a project
-* `DELETE` : Undo a task of a project
+#### /dockable/:stationId/:bikesToReturn
+* `GET` : Returns if there are sufficient available docks at a station with an appropriate message.
 
-## Todo
 
-- [x] Support basic REST APIs.
-- [ ] Support Authentication with user for securing the APIs.
-- [ ] Make convenient wrappers for creating API handlers.
-- [ ] Write the tests for all APIs.
-- [x] Organize the code with packages
-- [ ] Make docs with GoDoc
-- [ ] Building a deployment process 
+## Logging and Error Handling
+
+-Used "log" library to implement logging.
+-Everytime a request is made, the endpoint, request parameters, path parameters and the time taken to complete the request is logged.
+-When an error occurs , the error is logged and error message is returned to user with appropriate http status.
+
+Todo:
+-Implement Error Handling in a clean manner. Found [this](https://blog.golang.org/error-handling-and-go)  interesting, but because of lack of familiarity with Go could not implement it.
+
+##Cache implementation
+
+-Used "github.com/victorspringer/http-cache/adapter/memory" to implement cache.
+-The data is cached by method.
+-The cache eviction policy is LRU.
+
+Todo:
+-Understand how the implementation can be made more advanced, to be able to plug into Redis.
+-Cache by stationId instead of by method name.
+
+
+##Testing
+
+-The tests that have been added are not unit tests because they are making a call to the actual endpoint.
+-I have tested all workflows in the 5 api endpoints.
+-Error messages and codes have been tested as well.
+
+Todo:
+-Understand how to stub api outputs so that true unit tests can be written
